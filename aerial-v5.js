@@ -69,10 +69,7 @@ const POIS=[
 const labelDefs=[
  {name:'南青山三丁目',en:'MINAMI AOYAMA 3-CHOME',sub:'RESIDENCE AREA',lon:SITE.lon,lat:SITE.lat,type:'primary',chapters:[1]},
  {name:'表参道駅',en:'OMOTESANDO STA.',sub:'銀座線・半蔵門線・千代田線',lon:STATION.lon,lat:STATION.lat,type:'station',chapters:[1]},
- {name:'北青山',lon:139.7147,lat:35.6682,type:'area',chapters:[0]},
- {name:'神宮前',lon:139.7087,lat:35.6684,type:'area',chapters:[0]},
- {name:'南青山',lon:139.7184,lat:35.6622,type:'area',chapters:[0]},
- ...POIS];
+];
 
 const layer=stage.querySelector('.aerial-labels');
 const labels=labelDefs.map((d,i)=>{const el=document.createElement('div');
@@ -234,8 +231,7 @@ if(ready)fetch('assets/geo/aoyama-buildings.json').then(r=>{if(!r.ok)throw Error
 
 const chapters=[
  ['AOYAMA, FROM ABOVE','青山を、見渡す。','街の広がりから、この土地の魅力へ。'],
- ['OMOTESANDO / ACCESS','表参道駅 徒歩約7分','銀座線・半蔵門線・千代田線の3路線。'],
- ['MINAMI AOYAMA 3-CHOME','南青山三丁目に、暮らす。','表参道・北青山・神宮前。その街並みのそばに。']];
+ ['OMOTESANDO / ACCESS','表参道駅 徒歩約7分','銀座線・半蔵門線・千代田線の3路線。']];
 
 function getProgress(){if(section.dataset.preview)return Number(section.dataset.preview);
  if(reduce.matches)return progress;
@@ -247,13 +243,13 @@ function flatView(p,W,H){
  const mobile=W<760,s0=Math.max(W,H)/canvas.width*1.25;
  const st=px(STATION.lon,STATION.lat),si=px(SITE.lon,SITE.lat),c0={x:canvas.width/2,y:canvas.height/2};
  const mid={x:lerp(st.x,si.x,.5),y:lerp(st.y,si.y,.5)};
- const p1=smooth(clamp(p/.5)),p2=smooth(clamp((p-.55)/.45));
+ const p1=smooth(clamp(p/.7)),p2=0;
  const cx=lerp(lerp(c0.x,mid.x,p1),si.x+(mobile?30:20),p2),cy=lerp(lerp(c0.y,mid.y,p1)-lerp(0,mobile?40:70,p1),si.y-(mobile?130:110),p2);
  const s=s0*lerp(lerp(1,mobile?2.6:2.8,p1),mobile?2.1:2.3,p2);
  return{cx,cy,s}}
 
 function draw(){scheduled=false;progress=getProgress();
- const chapter=progress<.3?0:progress<.67?1:2;
+ const chapter=progress<.4?0:1;
  if(chapter!==active){active=chapter;stage.dataset.chapter=chapter;
   stage.querySelector('.aerial-kicker').textContent=chapters[chapter][0];
   stage.querySelector('.aerial-title').textContent=chapters[chapter][1];
@@ -265,7 +261,7 @@ function draw(){scheduled=false;progress=getProgress();
  const W=host.clientWidth,H=host.clientHeight,mobile=W<760;
  let proj;
  if(ready){
-  const p1=smooth(clamp(progress/.5)),p2=smooth(clamp((progress-.55)/.45));
+  const p1=smooth(clamp(progress/.7)),p2=0;
   const mid=stationPos.clone().lerp(sitePos,.55);
   const look1x=lerp(0,mid.x,p1),look1z=lerp(0,mid.z,p1);
   const lookX=lerp(look1x,sitePos.x+(mobile?40:10),p2),lookZ=lerp(look1z,sitePos.z-(mobile?300:150),p2)-lerp(0,mobile?130:210,p1)*(1-p2);
@@ -328,7 +324,7 @@ function resize(){if(ready){renderer.setSize(host.clientWidth,host.clientHeight,
 new ResizeObserver(resize).observe(host);
 addEventListener('scroll',requestDraw,{passive:true});
 reduce.addEventListener('change',resize);
-stage.querySelectorAll('[data-geo-chapter]').forEach((b,i)=>b.addEventListener('click',()=>{const p=[0,.45,1][i];
+stage.querySelectorAll('[data-geo-chapter]').forEach((b,i)=>b.addEventListener('click',()=>{const p=[0,1][i];
  if(reduce.matches){progress=p;requestDraw()}
  else scrollTo({top:scrollY+section.getBoundingClientRect().top+(section.offsetHeight-stage.offsetHeight)*p,behavior:'smooth'})}));
 resize();
