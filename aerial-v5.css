@@ -23,3 +23,7 @@
 @media(max-width:760px){.poi-ico{width:22px;height:22px}.poi-ico svg{width:13px;height:13px}.poi-name{font-size:11px}.geo-label.poi-home .poi-ico{width:28px;height:28px}.geo-label.poi-home .poi-ico svg{width:16px;height:16px}.geo-label.poi-home .poi-name{font-size:14px}}
 .geo-label.poi.flip{flex-direction:row-reverse}
 @media(max-width:760px){.poi-name{font-size:10.5px}.poi-ico{width:20px;height:20px;border-width:1.5px}.poi-ico svg{width:12px;height:12px}.geo-label.poi{gap:4px}}
+/* 章ボタン：2つを同じ幅で並べる */
+.aerial-steps{display:grid!important;grid-template-columns:1fr 1fr;gap:14px;width:min(440px,100%);flex:none}
+.aerial-steps button{width:100%;text-align:left}
+@media(max-width:760px){.aerial-steps{width:100%;gap:12px}}
