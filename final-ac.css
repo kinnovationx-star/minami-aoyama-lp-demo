@@ -5,7 +5,7 @@ h1,h2,h3,h4,.aerial-title,.luxury-v4 h1,.luxury-v4 h2,.luxury-v4 h3,.design-v3 h
 .final-ac #contact.cta-final{--cta-bg:#141518;--cta-panel:#1e1f23;--cta-ink:#f1eee8;--cta-muted:#8d8b86;--cta-line:#ffffff2e;--cta-btn:#2a2b2f;--cta-btn-h:#34353a;
  background:var(--cta-bg);color:var(--cta-ink);padding:150px 6% 120px!important;border:0;text-align:left}
 .final-ac.variant-c #contact.cta-final{--cta-bg:#121715;--cta-panel:#1a201d;--cta-btn:#232a26;--cta-btn-h:#2d3530}
-.cta-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,7vw,130px);align-items:center;max-width:1500px;margin:auto}
+.cta-grid{display:block;max-width:760px;margin:auto}
 .final-ac .cta-final h2.cta-display{font:400 clamp(56px,7.2vw,118px)/.98 'Cormorant Garamond','Optima','Times New Roman',serif!important;letter-spacing:.01em!important;color:var(--cta-ink)!important;margin:0 0 70px!important;writing-mode:horizontal-tb!important}
 .cta-display>span{display:block}
 .cta-display .l2{display:flex;align-items:flex-end;gap:22px;flex-wrap:nowrap;margin-top:.04em}

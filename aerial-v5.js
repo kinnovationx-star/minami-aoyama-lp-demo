@@ -24,48 +24,65 @@ const FILTER='saturate(1.28) contrast(1.06) brightness(1.04)';
 let renderer,scene,camera,mapTexture,buildings,ready=false,progress=0,scheduled=false,active=-1;
 
 /* ---- ラベル ---- */
+/* 地図アイコン（Apple マップ風）。色とアイコンは種別ごと */
+const ICON={
+ home:'<path d="M12 4 3.5 11H6v8h4.5v-5h3v5H18v-8h2.5z"/>',
+ train:'<path d="M7 3h10a3 3 0 0 1 3 3v8a3 3 0 0 1-2.2 2.9L19.5 20h-2.3l-1.5-3H8.3l-1.5 3H4.5l1.7-3.1A3 3 0 0 1 4 14V6a3 3 0 0 1 3-3zm-.5 3.5v4h11v-4zm1.8 6.2a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6zm7.4 0a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6z"/>',
+ school:'<path d="M12 4 1.5 9.5 12 15l8.5-4.4V16H22V9.5zM5.5 12.9V16c1.7 1.7 4 2.6 6.5 2.6s4.8-.9 6.5-2.6v-3.1L12 16.3z"/>',
+ med:'<path d="M9.5 3.5h5v6h6v5h-6v6h-5v-6h-6v-5h6z"/>',
+ shop:'<path d="M7 8V7a5 5 0 0 1 10 0v1h3l-1.2 12.5H5.2L4 8zm2 0h6V7a3 3 0 0 0-6 0z"/>',
+ park:'<path d="M12 2.5c3.3 0 5.6 2.5 5.6 5.5a5.6 5.6 0 0 1-1 3.2A4.6 4.6 0 0 1 14 19.6h-1V22h-2v-2.4h-1A4.6 4.6 0 0 1 7.4 11.2a5.6 5.6 0 0 1-1-3.2c0-3 2.3-5.5 5.6-5.5z"/>',
+ pub:'<path d="M12 2.5 3 7v2h18V7zM5 10.5h2.5v7H5zm5.75 0h2.5v7h-2.5zm5.75 0H19v7h-2.5zM3 19h18v2.5H3z"/>'};
 const CATS={
- edu:{jp:'教育',color:'#8fb4d8'},
- med:{jp:'医療',color:'#e3a597'},
- pub:{jp:'公共',color:'#d6c08e'},
- park:{jp:'公園・緑地',color:'#93c48b'},
- shop:{jp:'商業',color:'#c7aed6'}};
-/* 位置はOpenStreetMap（© OpenStreetMap contributors）の登録位置 */
+ home:{color:'#c9a45c'},
+ train:{color:'#3f7fe0'},
+ school:{color:'#d9853b'},
+ med:{color:'#e5534b'},
+ shop:{color:'#e2a72e'},
+ park:{color:'#3fae5a'},
+ pub:{color:'#7d8ea3'}};
+/* 位置はOpenStreetMap（© OpenStreetMap contributors）の登録位置。上から優先して表示 */
+const POIS=[
+ ['南青山三丁目','home',SITE.lon,SITE.lat],
+ ['表参道駅','train',STATION.lon,STATION.lat],
+ ['外苑前駅','train',139.717882,35.670465],
+ ['乃木坂駅','train',139.726342,35.666699],
+ ['港区立青南小学校','school',139.715947,35.663468],
+ ['港区立青山中学校','school',139.722425,35.674037],
+ ['港区立青山小学校','school',139.718957,35.67005],
+ ['表参道ヒルズ','shop',139.708868,35.667256],
+ ['成城石井','shop',139.716564,35.669441],
+ ['伊藤病院','med',139.710645,35.666294],
+ ['都立青山公園','park',139.725199,35.663614],
+ ['外苑前郵便局','pub',139.716493,35.66921],
+ ['表参道交番','pub',139.712355,35.66546],
+ ['青南いきいきプラザ','pub',139.717323,35.666461],
+ ['南青山保育園','school',139.718339,35.664993],
+ ['青南幼稚園','school',139.716993,35.663516],
+ ['都立青山高校','school',139.715787,35.672569],
+ ['青山学院','school',139.710435,35.660125],
+ ['北青山病院','med',139.71005,35.664821],
+ ['赤坂消防署','pub',139.720882,35.668987],
+ ['南青山三丁目緑地','park',139.716913,35.667865],
+ ['南青山四丁目緑地','park',139.720403,35.665821]
+].map(([name,cat,lon,lat])=>({name,cat,lon,lat,type:'poi',chapters:[2]}));
 const labelDefs=[
- {name:'南青山三丁目',en:'MINAMI AOYAMA 3-CHOME',sub:'RESIDENCE AREA',lon:SITE.lon,lat:SITE.lat,type:'primary',chapters:[1,2]},
- {name:'表参道駅',en:'OMOTESANDO STA.',sub:'銀座線・半蔵門線・千代田線',lon:STATION.lon,lat:STATION.lat,type:'station',chapters:[1,2]},
+ {name:'南青山三丁目',en:'MINAMI AOYAMA 3-CHOME',sub:'RESIDENCE AREA',lon:SITE.lon,lat:SITE.lat,type:'primary',chapters:[1]},
+ {name:'表参道駅',en:'OMOTESANDO STA.',sub:'銀座線・半蔵門線・千代田線',lon:STATION.lon,lat:STATION.lat,type:'station',chapters:[1]},
  {name:'北青山',lon:139.7147,lat:35.6682,type:'area',chapters:[0]},
  {name:'神宮前',lon:139.7087,lat:35.6684,type:'area',chapters:[0]},
  {name:'南青山',lon:139.7184,lat:35.6622,type:'area',chapters:[0]},
- {name:'港区立青南小学校',cat:'edu',kind:'小学校',lon:139.715947,lat:35.663468},
- {name:'青山保育園',cat:'edu',kind:'保育園',lon:139.712781,lat:35.666705},
- {name:'伊藤病院',cat:'med',kind:'病院',lon:139.710645,lat:35.666294},
- {name:'表参道交番',cat:'pub',kind:'交番',lon:139.712355,lat:35.66546},
- {name:'青南いきいきプラザ',cat:'pub',kind:'区民施設',lon:139.717323,lat:35.666461},
- {name:'南青山三丁目児童遊園',cat:'park',kind:'公園',lon:139.715815,lat:35.666816},
- {name:'表参道ヒルズ',cat:'shop',kind:'商業施設',lon:139.708868,lat:35.667256},
- {name:'青山学院大学',cat:'edu',kind:'大学',lon:139.710435,lat:35.660125},
- {name:'青南幼稚園',cat:'edu',kind:'幼稚園',lon:139.716993,lat:35.663516,minor:true},
- {name:'北青山病院',cat:'med',kind:'病院',lon:139.71005,lat:35.664821,minor:true},
- {name:'南青山三丁目緑地',cat:'park',kind:'緑地',lon:139.716913,lat:35.667865,minor:true},
- {name:'クラレンス・インターナショナルスクール',cat:'edu',kind:'インターナショナルスクール',lon:139.71583,lat:35.66587,minor:true}
-].map(d=>d.cat?{...d,type:'place',chapters:[2]}:d);
+ ...POIS];
 
 const layer=stage.querySelector('.aerial-labels');
 const labels=labelDefs.map((d,i)=>{const el=document.createElement('div');
- el.className=`geo-label ${d.type}${d.minor?' minor':''}`;
+ el.className=`geo-label ${d.type}${d.cat==='home'?' poi-home':''}`;
  if(d.type==='station')el.innerHTML=`<i class="pin"></i><span><em>${d.en}</em>${d.name}</span><small>${d.sub}</small>`;
  else if(d.type==='primary')el.innerHTML=`<span><em>${d.en}</em>${d.name}</span><small>${d.sub}</small>`;
- else if(d.type==='place'){el.style.setProperty('--cat',CATS[d.cat].color);el.innerHTML=`<span><i class="dot"></i>${d.name}<small>${d.kind}</small></span>`}
+ else if(d.type==='poi'){el.style.setProperty('--c',CATS[d.cat].color);el.innerHTML=`<i class="poi-ico"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[d.cat]}</svg></i><span class="poi-name">${d.name}</span>`}
  else el.innerHTML=`<span>${d.name}</span>`;
  layer.append(el);
- return{...d,el,priority:i,pos:point(d.lon,d.lat,d.type==='area'?40:22)}});
-
-/* 凡例（周辺エリア章） */
-const legend=document.createElement('div');
-legend.className='geo-legend';
-legend.innerHTML=`<b>周辺の生活施設</b>`+Object.values(CATS).map(c=>`<span><i style="background:${c.color}"></i>${c.jp}</span>`).join('');
-stage.append(legend);
+ return{...d,el,priority:i,pos:point(d.lon,d.lat,d.type==='area'?40:d.type==='poi'?14:22)}});
 
 /* 駅→三丁目の線と距離 */
 const svgNS='http://www.w3.org/2000/svg';
@@ -231,8 +248,8 @@ function flatView(p,W,H){
  const st=px(STATION.lon,STATION.lat),si=px(SITE.lon,SITE.lat),c0={x:canvas.width/2,y:canvas.height/2};
  const mid={x:lerp(st.x,si.x,.5),y:lerp(st.y,si.y,.5)};
  const p1=smooth(clamp(p/.5)),p2=smooth(clamp((p-.55)/.45));
- const cx=lerp(lerp(c0.x,mid.x,p1),si.x-60,p2),cy=lerp(lerp(c0.y,mid.y,p1)-lerp(0,mobile?40:70,p1),si.y-(mobile?10:40),p2);
- const s=s0*lerp(lerp(1,mobile?2.6:2.8,p1),mobile?3.2:3.6,p2);
+ const cx=lerp(lerp(c0.x,mid.x,p1),si.x+(mobile?30:20),p2),cy=lerp(lerp(c0.y,mid.y,p1)-lerp(0,mobile?40:70,p1),si.y-(mobile?130:110),p2);
+ const s=s0*lerp(lerp(1,mobile?2.6:2.8,p1),mobile?2.1:2.3,p2);
  return{cx,cy,s}}
 
 function draw(){scheduled=false;progress=getProgress();
@@ -251,12 +268,13 @@ function draw(){scheduled=false;progress=getProgress();
   const p1=smooth(clamp(progress/.5)),p2=smooth(clamp((progress-.55)/.45));
   const mid=stationPos.clone().lerp(sitePos,.55);
   const look1x=lerp(0,mid.x,p1),look1z=lerp(0,mid.z,p1);
-  const lookX=lerp(look1x,sitePos.x-110,p2),lookZ=lerp(look1z,sitePos.z,p2)-lerp(lerp(0,mobile?130:210,p1),mobile?60:90,p2);
-  const height=lerp(lerp(mobile?1600:1800,mobile?1350:620,p1),mobile?760:560,p2);
-  const distance=lerp(lerp(mobile?850:750,mobile?760:820,p1),mobile?560:540,p2);
+  const lookX=lerp(look1x,sitePos.x+(mobile?40:10),p2),lookZ=lerp(look1z,sitePos.z-(mobile?300:150),p2)-lerp(0,mobile?130:210,p1)*(1-p2);
+  const height=lerp(lerp(mobile?1600:1800,mobile?1350:620,p1),mobile?3000:1150,p2);
+  const distance=lerp(lerp(mobile?850:750,mobile?760:820,p1),mobile?700:520,p2);
   const sway=lerp(-280,140,progress)*(1-p2*.7)*(mobile?.35:1);
   camera.position.set(lookX+sway,height,lookZ+distance);
   camera.lookAt(lookX,0,lookZ);
+  scene.fog.near=Math.max(2600,height*1.6);scene.fog.far=scene.fog.near+3000;camera.far=Math.max(7000,height*3);camera.updateProjectionMatrix();
   stationRing.material.opacity=clamp((progress-.15)*3)*.8;
   stationRing.scale.setScalar(1+.16*Math.sin(progress*16));
   siteRing.material.opacity=clamp((progress-.4)*3)*.6;
@@ -277,8 +295,7 @@ function draw(){scheduled=false;progress=getProgress();
  /* 駅→三丁目の線 */
  const a=ready?proj(stationPos):proj(STATION),b=ready?proj(sitePos):proj(SITE),showRoute=chapter===1&&a.ok&&b.ok;
  route.style.opacity=showRoute?'1':'0';routeLabel.style.opacity=showRoute?'1':'0';
- legend.classList.toggle('show',chapter===2);
- if(showRoute){[routeGlow,routeLine].forEach(l=>{l.setAttribute('x1',a.x);l.setAttribute('y1',a.y);l.setAttribute('x2',b.x);l.setAttribute('y2',b.y)});
+  if(showRoute){[routeGlow,routeLine].forEach(l=>{l.setAttribute('x1',a.x);l.setAttribute('y1',a.y);l.setAttribute('x2',b.x);l.setAttribute('y2',b.y)});
   dotA.setAttribute('cx',a.x);dotA.setAttribute('cy',a.y);dotB.setAttribute('cx',b.x);dotB.setAttribute('cy',b.y);
   routeLabel.style.transform=`translate(${(a.x+b.x)/2}px,${(a.y+b.y)/2}px) translate(-50%,-50%)`}}
 
@@ -287,17 +304,24 @@ function placeLabels(chapter,proj,W,H){
  const sr=stage.getBoundingClientRect(),boxes=[];
  const block=el=>{if(!el)return;const b=el.getBoundingClientRect();if(!b.width)return;boxes.push({l:b.left-sr.left-10,r:b.right-sr.left+10,t:b.top-sr.top-10,b:b.bottom-sr.top+10})};
  block(stage.querySelector('.aerial-heading'));
- if(chapter===2)block(legend);
  const hit=r=>boxes.some(o=>r.l<o.r&&r.r>o.l&&r.t<o.b&&r.b>o.t);
  for(const d of labels){
   const v=ready?proj(d.pos):proj(d);
-  const show=d.chapters.includes(chapter)&&(chapter!==0||stage.classList.contains('map-ready'))&&!(d.minor&&W<760);
-  d.el.style.transform=`translate(${v.x}px,${v.y}px) translate(-50%,-100%)`;
+  const show=d.chapters.includes(chapter)&&(chapter!==0||stage.classList.contains('map-ready'));
+  const poi=d.type==='poi',ic=poi?d.el.firstElementChild.offsetWidth/2:0;
   if(!show||!v.ok||v.x<8||v.x>W-8||v.y<70||v.y>H-100){d.el.style.opacity='0';continue}
-  const w=d.el.offsetWidth,h=d.el.offsetHeight,r={l:v.x-w/2,r:v.x+w/2,t:v.y-h,b:v.y};
-  const key=d.type==='primary'||d.type==='station';
+  const w=d.el.offsetWidth,h=d.el.offsetHeight;
+  let r,flip=false;
+  if(poi){r={l:v.x-ic,r:v.x-ic+w,t:v.y-h/2,b:v.y+h/2};
+   const alt={l:v.x+ic-w,r:v.x+ic,t:r.t,b:r.b};
+   /* 右にはみ出す・重なる場合は名前を左側へ */
+   if(r.r>W-4||hit(r)){if(alt.l>=4&&!hit(alt)){r=alt;flip=true}}
+   d.el.classList.toggle('flip',flip);
+   d.el.style.transform=`translate(${flip?v.x+ic-w:v.x-ic}px,${v.y}px) translate(0,-50%)`;
+  }else{r={l:v.x-w/2,r:v.x+w/2,t:v.y-h,b:v.y};d.el.style.transform=`translate(${v.x}px,${v.y}px) translate(-50%,-100%)`}
+  const key=d.type==='primary'||d.type==='station'||d.cat==='home';
   if(!key&&(r.l<4||r.r>W-4||hit(r))){d.el.style.opacity='0';continue}
-  boxes.push({l:r.l-6,r:r.r+6,t:r.t-6,b:r.b+4});d.el.style.opacity='1'}}
+  boxes.push({l:r.l-4,r:r.r+4,t:r.t-3,b:r.b+3});d.el.style.opacity='1'}}
 
 function requestDraw(){if(!scheduled){scheduled=true;requestAnimationFrame(draw)}}
 function resize(){if(ready){renderer.setSize(host.clientWidth,host.clientHeight,false);camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix()}requestDraw()}
