@@ -1,0 +1,72 @@
+.final-ac .header>nav{display:none!important}.final-ac .header{justify-content:space-between}.final-ac .menu-btn{display:block!important;width:48px;height:48px;font-size:0!important;position:relative;border:1px solid color-mix(in srgb,var(--ink) 35%,transparent);background:transparent;color:var(--ink);z-index:102;border-radius:0}.final-ac .menu-btn:before,.final-ac .menu-btn:after{content:'';position:absolute;width:22px;height:1px;background:currentColor;left:12px;top:18px;transition:transform .4s,top .4s}.final-ac .menu-btn:after{top:27px}.final-ac .menu-btn[aria-expanded=true]:before{transform:rotate(45deg);top:23px}.final-ac .menu-btn[aria-expanded=true]:after{transform:rotate(-45deg);top:23px}.final-ac .mobile-menu{position:fixed;inset:0;z-index:101;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px;background:var(--paper);padding:80px 7%;height:100dvh}.final-ac .mobile-menu[hidden]{display:none}.final-ac .mobile-menu a{font:400 clamp(22px,3vw,38px)/1.7 var(--mincho);letter-spacing:.12em;border:0;padding:9px 0;transition:opacity .3s}.final-ac .mobile-menu a:hover{opacity:.55}.final-ac.menu-open .header{position:fixed;left:0;right:0;top:0;z-index:102;background:var(--paper)}.final-ac.menu-open{overflow:hidden}.final-ac #contact{padding-bottom:150px!important}.final-ac .estate-visual img{aspect-ratio:4/3;object-fit:cover;object-position:center}.final-ac .estate-visual figcaption{font:8px/1.8 sans-serif;letter-spacing:.18em;margin-top:12px}.final-ac .aerial-credit{font-size:8px}.final-ac .outline-source{font:7px/1.7 sans-serif;opacity:.5;margin:8px 0;display:block}.final-ac .outline-source a{color:inherit}.final-ac #after-plans{height:1px;padding:0;margin:0}.final-ac .site-slide figcaption{font-size:9px!important}.final-ac .estate-visual{top:24px}
+@media(max-width:760px){.final-ac .header{height:70px}.final-ac .menu-btn{width:42px;height:42px}.final-ac .menu-btn:before{left:10px;top:15px;width:20px}.final-ac .menu-btn:after{left:10px;top:24px;width:20px}.final-ac .menu-btn[aria-expanded=true]:before,.final-ac .menu-btn[aria-expanded=true]:after{top:20px}.final-ac .mobile-menu{gap:12px}.final-ac .estate-visual img{aspect-ratio:4/3}.final-ac .aerial-credit{font-size:6px}}
+h1,h2,h3,h4,.aerial-title,.luxury-v4 h1,.luxury-v4 h2,.luxury-v4 h3,.design-v3 h1,.design-v3 h2,.design-v3 h3,.design-v3.variant-c h2,.design-v3.variant-c h3{font-family:'Yu Mincho','YuMincho','Hiragino Mincho ProN','Noto Serif JP',serif!important;font-weight:400!important}
+/* ===== 最終CTA（PRIORITY ACCESS 調） ===== */
+.final-ac #contact.cta-final{--cta-bg:#141518;--cta-panel:#1e1f23;--cta-ink:#f1eee8;--cta-muted:#8d8b86;--cta-line:#ffffff2e;--cta-btn:#2a2b2f;--cta-btn-h:#34353a;
+ background:var(--cta-bg);color:var(--cta-ink);padding:150px 6% 120px!important;border:0;text-align:left}
+.final-ac.variant-c #contact.cta-final{--cta-bg:#121715;--cta-panel:#1a201d;--cta-btn:#232a26;--cta-btn-h:#2d3530}
+.cta-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,7vw,130px);align-items:center;max-width:1500px;margin:auto}
+.final-ac .cta-final h2.cta-display{font:400 clamp(56px,7.2vw,118px)/.98 'Cormorant Garamond','Optima','Times New Roman',serif!important;letter-spacing:.01em!important;color:var(--cta-ink)!important;margin:0 0 70px!important;writing-mode:horizontal-tb!important}
+.cta-display>span{display:block}
+.cta-display .l2{display:flex;align-items:flex-end;gap:22px;flex-wrap:nowrap;margin-top:.04em}
+.cta-display .l2>span:last-child{white-space:nowrap}
+.cta-jp{font:400 14px/1.8 'Yu Mincho','Hiragino Mincho ProN','Noto Serif JP',serif;letter-spacing:.1em;white-space:nowrap;padding-bottom:.55em;color:#d9d5cc}
+.cta-rule{flex:1 1 60px;min-width:40px;max-width:180px;height:1px;background:#ffffff8c;margin-bottom:.2em}
+.cta-actions{display:grid;gap:10px;max-width:700px}
+.cta-row{display:grid;grid-template-columns:1fr 132px;gap:7px;text-decoration:none;color:var(--cta-ink)}
+.cta-label,.cta-arrow{display:flex;align-items:center;justify-content:center;min-height:120px;background:var(--cta-btn);border:1px solid #ffffff26;transition:background .35s,border-color .35s}
+.cta-label{font:400 19px/1.5 'Yu Mincho','Hiragino Mincho ProN',serif;letter-spacing:.14em}
+.cta-arrow svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:1;transition:transform .35s}
+.cta-row:hover .cta-label,.cta-row:hover .cta-arrow{background:var(--cta-btn-h);border-color:#c9b58a8c}
+.cta-row:hover .cta-arrow svg{transform:translate(4px,-4px)}
+.cta-notes{margin-top:80px;max-width:700px}
+.final-ac .cta-notes h3{font:400 26px/1 'Cormorant Garamond','Optima',serif!important;letter-spacing:.04em;color:#cfccc5;margin:0 0 22px}
+.final-ac .cta-notes p{font-size:12px!important;line-height:1.8!important;color:var(--cta-muted);margin:0 0 12px;letter-spacing:.04em}
+.cta-visual{background:var(--cta-panel);aspect-ratio:1/0.92;display:flex;align-items:center;justify-content:center;perspective:1200px}
+.cta-card{position:relative;width:min(58%,420px);aspect-ratio:1.586;border-radius:14px;overflow:hidden;padding:7% 7%;color:#e9e4d6;display:flex;flex-direction:column;
+ background:linear-gradient(160deg,transparent 62%,#1f4d4a80 63%,#0f2a2c 100%),radial-gradient(circle at 20% 15%,#24453c 0%,#132a25 45%,#081512 100%);
+ box-shadow:0 30px 60px #0009,0 2px 0 #ffffff14 inset;transform:rotateX(6deg) rotateY(-10deg);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.cta-card:before{content:'';position:absolute;inset:0;background-image:radial-gradient(#ffffff26 .6px,transparent .8px),radial-gradient(#c9b58a40 .5px,transparent .7px);background-size:5px 5px,7px 7px;background-position:0 0,2px 3px;mix-blend-mode:screen;opacity:.55}
+.cta-card:after{content:'';position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 40%,#ffffff1f 50%,transparent 60%);transform:translateX(-30%);transition:transform 1.2s}
+.cta-visual:hover .cta-card{transform:rotateX(0) rotateY(0)}
+.cta-visual:hover .cta-card:after{transform:translateX(30%)}
+.cta-card-brand{position:relative;font:500 clamp(18px,1.7vw,26px)/1.2 'Cormorant Garamond','Optima',serif;letter-spacing:.08em}
+.cta-card-sub{position:relative;font:9px/1.6 sans-serif;letter-spacing:.24em;color:#c9b58a;margin-top:6px}
+.cta-card-chip{position:relative;width:13%;aspect-ratio:1.3;margin-top:auto;border-radius:4px;background:linear-gradient(135deg,#e2cf9f,#9d8656);opacity:.85}
+.cta-card-no{position:relative;font:10px/1.6 sans-serif;letter-spacing:.22em;color:#d8d2c2;margin-top:12px}
+.cta-bottom{display:block;width:max-content;margin:110px auto 0;padding:24px 56px;background:var(--cta-btn);border:1px solid #ffffff33;color:var(--cta-ink);text-decoration:none;font:400 16px/1.5 'Yu Mincho','Hiragino Mincho ProN',serif;letter-spacing:.12em;transition:background .35s,border-color .35s}
+.cta-bottom:hover{background:var(--cta-btn-h);border-color:#c9b58a8c}
+@media(max-width:900px){
+ .final-ac #contact.cta-final{padding:90px 6% 130px!important}
+ .cta-grid{grid-template-columns:1fr;gap:56px}
+ .final-ac .cta-final h2.cta-display{font-size:clamp(44px,13vw,70px)!important;margin-bottom:44px!important}
+ .cta-display .l2{flex-direction:column;align-items:flex-start;gap:14px}
+ .cta-display .l2 .cta-rule{display:none}
+ .cta-jp{order:2;font-size:13px;padding:0}
+ .cta-row{grid-template-columns:1fr 76px}
+ .cta-label,.cta-arrow{min-height:76px}
+ .cta-label{font-size:16px}
+ .cta-notes{margin-top:50px}
+ .cta-visual{aspect-ratio:1/0.8}
+ .cta-card{width:72%}
+ .cta-bottom{margin-top:60px;width:100%;text-align:center;padding:20px}
+}
+
+/* ===== PC版：見出し以外の文字を大きく ===== */
+@media(min-width:1024px){
+ .final-ac main .eyebrow{font-size:12px!important}
+ .final-ac main :is(.intro-copy p,.possibilities article p,.frontage p:not(.note),.volume-box p,.pin-kicker){font-size:17px!important;line-height:2!important}
+ .final-ac main :is(.note,.estate-note,.estate-laws p){font-size:13px!important;line-height:1.9!important}
+ .final-ac main :is(.intro-tags span,.living-caption span,.volume-box>span,.possibilities article>b){font-size:13px!important}
+ .final-ac main :is(.estate-group-title span,.estate-price span,.estate-price small,#outline dt,#outline div>small,#outline div>span){font-size:13px!important}
+ .final-ac main #outline dd{font-size:16px!important}
+ .final-ac main :is(.estate-laws summary,.estate-laws summary span){font-size:15px!important}
+ .final-ac main :is(.pin-counter,.pin-counter a,.pin-counter span){font-size:14px!important}
+ .final-ac main :is(.pin-controls button span){font-size:13px!important}
+ .final-ac main :is(.site-hint,.pin-instruction){font-size:11px!important}
+ .final-ac main :is(.hero-scroll){font-size:11px!important}
+ .final-ac main #volume a.btn{font-size:15px!important}
+ .final-ac main #outline figcaption{font-size:11px!important}
+ .final-ac main .outline-source,.final-ac main .outline-source a{font-size:10px!important}
+ .final-ac .sticky .btn{font-size:14px!important}
+}

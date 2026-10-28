@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>お問い合わせ｜南青山三丁目</title>
+<link href="contact.css?v=1" rel="stylesheet"/>
+<script>
+/* デザイン（A/C）を先に決めてチラつきを防ぐ */
+(function(){var q=new URLSearchParams(location.search),d=q.get('d')==='a'?'a':'c';document.documentElement.dataset.design=d})();
+</script>
+</head>
+<body>
+<header class="c-header">
+ <a class="c-logo" data-back href="c.html">MINAMI AOYAMA<small>3-CHOME / RESIDENCE LAND</small></a>
+ <a class="c-back" data-back href="c.html"><span aria-hidden="true">←</span> 物件ページへ戻る</a>
+</header>
+
+<main class="c-main">
+ <aside class="c-visual" aria-hidden="true">
+  <img class="c-visual-img" alt="" src="assets/mood/terrace-dusk.webp"/>
+  <div class="c-visual-copy">
+   <span class="c-eyebrow">PRIVATE CONSULTATION</span>
+   <p class="c-visual-title">この土地から始まる、<br/>あなただけの計画を。</p>
+   <p class="c-visual-meta">南青山三丁目　土地 151.75㎡（45.90坪）<br/>表参道駅 徒歩約7分</p>
+  </div>
+ </aside>
+
+ <section class="c-form-wrap" aria-labelledby="contact-title">
+  <span class="c-eyebrow">CONTACT</span>
+  <h1 id="contact-title">資料請求・現地案内のご予約</h1>
+  <p class="c-lead">ご検討に必要な資料一式をお届けします。現地のご案内は、ご希望の日時に合わせて担当者が調整いたします。秘密厳守で対応いたします。</p>
+
+  <div class="c-deliverables">
+   <h2>ご検討のための資料一式</h2>
+   <ul>
+    <li>参考建築プラン・建築CG</li>
+    <li>土地境界確認書の写し</li>
+    <li>建築ボリューム検討書</li>
+   </ul>
+   <p class="c-note">各資料の提供可否・内容は担当者確認後に確定いたします。</p>
+  </div>
+
+  <form class="c-form" novalidate>
+   <fieldset class="c-choice">
+    <legend>ご希望<em>必須</em></legend>
+    <label><input checked name="request" type="radio" value="資料請求"/><span>資料請求</span></label>
+    <label><input name="request" type="radio" value="現地案内"/><span>現地案内を予約</span></label>
+   </fieldset>
+
+   <label class="c-field"><span>お名前<em>必須</em></span><input autocomplete="name" name="name" placeholder="山田 太郎" required/></label>
+   <label class="c-field"><span>メールアドレス<em>必須</em></span><input autocomplete="email" name="email" placeholder="example@email.com" required type="email"/></label>
+   <label class="c-field"><span>電話番号<em>必須</em></span><input autocomplete="tel" name="tel" placeholder="090-0000-0000" required type="tel"/></label>
+   <div class="c-row">
+    <label class="c-field"><span>個人・法人</span>
+     <select name="type"><option>個人</option><option>法人</option></select></label>
+    <label class="c-field c-visit"><span>現地案内のご希望日</span><input name="date" type="date"/></label>
+   </div>
+   <label class="c-field"><span>ご質問・ご要望</span><textarea name="message" placeholder="ご検討中の用途や、ご質問などをご記入ください。" rows="4"></textarea></label>
+
+   <label class="c-consent"><input name="consent" required type="checkbox"/><span>個人情報の取り扱いに同意する<small>個人情報保護方針へのリンクは公開時に設置します。</small></span></label>
+
+   <button class="c-submit" type="submit">入力内容を確認する<span aria-hidden="true">→</span></button>
+   <p class="c-status" role="status"></p>
+   <p class="c-note">デザインプレビューのため、このフォームから情報は送信されません。</p>
+  </form>
+ </section>
+</main>
+
+<footer class="c-footer">© MINAMI AOYAMA 3-CHOME — DEMO</footer>
+
+<script>
+(function(){
+ var q=new URLSearchParams(location.search),d=document.documentElement.dataset.design,page=d+'.html';
+ document.querySelectorAll('[data-back]').forEach(function(a){a.href=page});
+ if(d==='a')document.querySelector('.c-visual-img').src='assets/mood/material-light.webp';
+ var t=q.get('type');
+ document.querySelectorAll('[name=request]').forEach(function(r){if(r.value===t)r.checked=true});
+ var form=document.querySelector('.c-form'),visit=document.querySelector('.c-visit');
+ function sync(){var v=form.querySelector('[name=request]:checked').value;visit.hidden=v!=='現地案内'}
+ form.addEventListener('change',sync);sync();
+ form.addEventListener('submit',function(e){e.preventDefault();
+  var bad=[].filter.call(form.querySelectorAll('[required]'),function(el){return !el.checkValidity()});
+  form.querySelectorAll('.is-invalid').forEach(function(el){el.classList.remove('is-invalid')});
+  bad.forEach(function(el){(el.closest('.c-field,.c-consent')||el).classList.add('is-invalid')});
+  document.querySelector('.c-status').textContent=bad.length?'未入力の必須項目があります。':'デモのため送信は行いません。公開時に確認画面と送信処理を接続します。';
+  if(bad.length)bad[0].focus();
+ });
+})();
+</script>
+</body>
+</html>

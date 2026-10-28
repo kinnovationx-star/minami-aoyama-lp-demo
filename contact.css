@@ -1,0 +1,81 @@
+/* お問い合わせページ。data-design="c"（既定）＝深い墨緑×シャンパンゴールド、"a"＝石の黒×真鍮 */
+:root{
+ --mincho:'Yu Mincho','YuMincho','Hiragino Mincho ProN','Noto Serif JP',serif;
+ --sans:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;
+ --bg:#14201d;--panel:#18251f;--ink:#efe9dc;--muted:#b9b29f;--line:#c9b58a40;--gold:#c9b58a;--gold-strong:#dcc79a;--field:#ffffff08;--err:#e7a08f;
+}
+:root[data-design="a"]{--bg:#161716;--panel:#1c1d1b;--ink:#ece8df;--muted:#aaa59a;--line:#b99f6e40;--gold:#b99f6e;--gold-strong:#d4bb86;--field:#ffffff07}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.9 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.c-header{position:fixed;inset:0 0 auto;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:22px 4%;background:linear-gradient(#0009,#0000);pointer-events:none}
+.c-header a{pointer-events:auto;text-decoration:none}
+.c-logo{font:400 15px/1.3 var(--mincho);letter-spacing:.18em;color:#fff}
+.c-logo small{display:block;font:9px/1.6 var(--sans);letter-spacing:.2em;opacity:.7}
+.c-back{font-size:13px;letter-spacing:.08em;color:#fff;border-bottom:1px solid #ffffff66;padding-bottom:3px}
+.c-back:hover{border-color:var(--gold-strong);color:var(--gold-strong)}
+
+.c-main{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);min-height:100vh}
+.c-visual{position:sticky;top:0;height:100vh;overflow:hidden}
+.c-visual-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.04);animation:c-drift 18s ease-out forwards}
+@keyframes c-drift{to{transform:scale(1)}}
+.c-visual:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0000 30%,#000c 100%),linear-gradient(90deg,#0003,#0000)}
+.c-visual-copy{position:absolute;left:9%;right:9%;bottom:9%;z-index:1;color:#fff}
+.c-visual-title{font:400 clamp(26px,2.4vw,38px)/1.75 var(--mincho);letter-spacing:.08em;margin:16px 0 22px}
+.c-visual-meta{font:13px/2 var(--sans);letter-spacing:.08em;color:#ffffffcc;border-top:1px solid #ffffff4d;padding-top:18px;margin:0}
+
+.c-eyebrow{display:block;font:11px/1.6 var(--sans);letter-spacing:.28em;color:var(--gold)}
+.c-visual .c-eyebrow{color:var(--gold-strong)}
+.c-form-wrap{padding:150px 9% 90px;background:var(--panel)}
+.c-form-wrap h1{font:400 clamp(26px,2.2vw,34px)/1.6 var(--mincho);letter-spacing:.08em;margin:14px 0 18px}
+.c-lead{color:var(--muted);margin:0 0 44px;max-width:34em}
+.c-deliverables{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:30px 0;margin-bottom:46px}
+.c-deliverables h2{font:400 19px/1.6 var(--mincho);letter-spacing:.06em;margin:0 0 14px}
+.c-deliverables ul{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:6px}
+.c-deliverables li{padding-left:22px;position:relative}
+.c-deliverables li:before{content:'';position:absolute;left:0;top:.95em;width:10px;height:1px;background:var(--gold)}
+.c-note{font-size:12px;color:var(--muted);margin:0}
+
+.c-form{display:grid;gap:26px;max-width:620px}
+.c-choice{border:0;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.c-choice legend,.c-field>span{font-size:13px;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;padding:0}
+em{font-style:normal;font-size:10px;letter-spacing:.1em;color:var(--gold);border:1px solid var(--line);padding:1px 7px;margin-left:10px;vertical-align:2px}
+.c-choice label{position:relative;cursor:pointer}
+.c-choice input{position:absolute;opacity:0}
+.c-choice span{display:block;text-align:center;padding:16px 10px;border:1px solid var(--line);font:400 16px/1.5 var(--mincho);letter-spacing:.08em;transition:.25s}
+.c-choice input:checked+span{border-color:var(--gold);background:linear-gradient(135deg,#c9b58a26,#c9b58a0a);color:var(--gold-strong)}
+.c-choice input:focus-visible+span{outline:1px solid var(--gold-strong);outline-offset:3px}
+.c-field{display:block}
+.c-field>span{display:block}
+.c-field input,.c-field select,.c-field textarea{width:100%;font:16px/1.6 var(--sans);color:var(--ink);background:var(--field);border:0;border-bottom:1px solid var(--line);border-radius:0;padding:14px 4px;outline:0;transition:border-color .25s;-webkit-appearance:none;appearance:none}
+.c-field select{background-image:linear-gradient(45deg,#0000 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,#0000 50%);background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+.c-field select option{color:#111}
+.c-field input::placeholder,.c-field textarea::placeholder{color:#ffffff40}
+.c-field input:focus,.c-field select:focus,.c-field textarea:focus{border-color:var(--gold-strong)}
+.c-field input[type=date]{color-scheme:dark}
+.c-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.c-row .c-field[hidden]{display:block;visibility:hidden}
+.c-consent{display:flex;gap:14px;align-items:flex-start;font-size:14px;cursor:pointer}
+.c-consent input{width:18px;height:18px;margin-top:5px;accent-color:var(--gold)}
+.c-consent small{display:block;font-size:12px;color:var(--muted)}
+.is-invalid input,.is-invalid select{border-color:var(--err)!important}
+.c-consent.is-invalid{color:var(--err)}
+.c-submit{margin-top:8px;display:flex;justify-content:space-between;align-items:center;width:100%;padding:22px 28px;border:1px solid var(--gold);background:linear-gradient(135deg,var(--gold-strong),var(--gold));color:#1b1a16;font:400 17px/1 var(--mincho);letter-spacing:.14em;cursor:pointer;transition:filter .25s,transform .25s}
+.c-submit:hover{filter:brightness(1.08)}
+.c-submit span{font-family:var(--sans);transition:transform .25s}
+.c-submit:hover span{transform:translateX(6px)}
+.c-status{min-height:1.5em;margin:0;font-size:14px;color:var(--gold-strong)}
+.c-footer{padding:28px 4%;font-size:11px;letter-spacing:.18em;color:var(--muted);border-top:1px solid var(--line);background:var(--bg)}
+
+@media(max-width:900px){
+ .c-main{display:block}
+ .c-visual{position:relative;height:62svh;min-height:420px}
+ .c-visual-copy{bottom:7%}
+ .c-form-wrap{padding:56px 6% 70px}
+ .c-header{padding:16px 5%}
+ .c-back{font-size:12px}
+ .c-row{grid-template-columns:1fr;gap:26px}
+ .c-row .c-field[hidden]{display:none}
+}
+@media(prefers-reduced-motion:reduce){.c-visual-img{animation:none;transform:none}}
