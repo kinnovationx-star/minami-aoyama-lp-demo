@@ -206,3 +206,8 @@ body.final-ac{padding-top:var(--hh)}
 .acc-list li:before{content:'';position:absolute;left:2px;top:.62em;width:12px;height:7px;border-left:1.5px solid var(--c-gold);border-bottom:1.5px solid var(--c-gold);transform:rotate(-45deg)}
 .estate-acc .acc-title{font-size:clamp(20px,1.8vw,26px)}
 @media(max-width:760px){.acc-list li{font-size:14.5px}.estate-acc .acc-title{font-size:19px}}
+
+/* ---------- 物件概要：左に価格・坪単価・路線価を大きく ---------- */
+.estate-area p .pre{margin-right:.15em}
+.estate-area p{white-space:nowrap}
+@media(max-width:760px){.estate-area{gap:18px!important}.estate-area p{font-size:clamp(26px,7.4vw,34px)!important}}
