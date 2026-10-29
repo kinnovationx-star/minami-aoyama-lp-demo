@@ -1,0 +1,79 @@
+/* =========================================================
+   C案 確定版の追加スタイル（今後の修正はこのファイルで）
+   ========================================================= */
+:root{--c-gold:#b39a68;--c-gold-l:#d8c39a;--c-mincho:'Yu Mincho','YuMincho','Hiragino Mincho ProN','Noto Serif JP',serif}
+
+/* ---------- ファーストビュー：価格 ---------- */
+.hero-price{margin-top:26px;padding-top:22px;border-top:1px solid color-mix(in srgb,var(--c-gold) 70%,transparent);animation:heroCopy 1.5s .25s ease both}
+.hero-price-label{display:block;font:11px/1.4 -apple-system,sans-serif;letter-spacing:.32em;color:var(--c-gold)}
+.hero-price-num{display:flex;align-items:baseline;gap:.06em;margin:8px 0 0!important;font-family:var(--c-mincho);color:var(--ink,#1d211c)!important;line-height:1}
+.hero-price-num strong{font:400 clamp(56px,6.2vw,92px)/1.05 var(--c-mincho);letter-spacing:-.01em}
+.hero-price-num .u{font:400 clamp(20px,1.9vw,28px)/1 var(--c-mincho);letter-spacing:.04em;margin:0 .14em}
+.hero-price-meta{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:12px 0 0!important;font:13px/1.6 -apple-system,sans-serif!important;letter-spacing:.06em!important;color:#5d625a!important}
+.hero-price-meta i{width:1px;height:12px;background:#b9b6aa}
+.photo-v2 .editorial-photo .minimal-title{max-width:min(560px,46%)}
+@media(max-width:760px){
+ .photo-v2 .editorial-photo .minimal-title{max-width:88%;bottom:calc(76px + env(safe-area-inset-bottom))!important}
+ .hero-price{margin-top:16px;padding-top:14px}
+ .hero-price-label{font-size:9px}
+ .hero-price-num strong{font-size:50px}
+ .hero-price-num .u{font-size:18px}
+ .hero-price-meta{font-size:11px!important;gap:8px}
+}
+
+/* ---------- 物件概要：アコーディオン ---------- */
+.estate-information{border-top:1px solid var(--line,#cfd2c8)}
+.estate-acc{border-bottom:1px solid var(--line,#cfd2c8)}
+.estate-acc summary{list-style:none;display:flex;align-items:center;gap:18px;padding:26px 4px;cursor:pointer}
+.estate-acc summary::-webkit-details-marker{display:none}
+.acc-no{flex:none;font:400 11px/1 -apple-system,sans-serif;letter-spacing:.14em;color:#8b8f86}
+.acc-title{flex:1;font:400 clamp(20px,1.7vw,24px)/1.5 var(--c-mincho);letter-spacing:.08em;color:var(--ink,#1d211c)}
+.acc-icon{position:relative;flex:none;width:22px;height:22px}
+.acc-icon:before,.acc-icon:after{content:'';position:absolute;left:3px;right:3px;top:50%;height:1px;background:currentColor;transition:transform .35s ease}
+.acc-icon:after{transform:rotate(90deg)}
+.estate-acc[open] .acc-icon:after{transform:rotate(0)}
+.estate-acc summary:hover .acc-title{color:var(--c-gold)}
+.estate-acc summary:focus-visible{outline:1px solid var(--c-gold);outline-offset:2px}
+.acc-body{padding:0 4px 26px 36px;animation:accIn .45s ease}
+.acc-body dl{margin:0}
+.acc-body dl>div{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 0;border-top:1px dashed color-mix(in srgb,var(--line,#cfd2c8) 80%,transparent)}
+.acc-body dl>div:first-child{border-top:0}
+.acc-body dt{font-size:13px!important;color:#7a7f75}
+.acc-body dd{margin:0;font-size:16px!important;line-height:1.8}
+.acc-body p{font-size:14px!important;line-height:1.9;color:#5d625a;margin:0}
+.estate-acc-sub summary{padding:18px 4px}
+.estate-acc-sub .acc-title{font-size:16px;letter-spacing:.06em;color:#4d524a}
+.estate-acc-sub .acc-body{padding-left:4px}
+@keyframes accIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media(max-width:760px){
+ .estate-acc summary{gap:12px;padding:20px 2px}
+ .acc-title{font-size:18px}
+ .acc-body{padding:0 2px 20px 0}
+ .acc-body dl>div{grid-template-columns:1fr;gap:2px}
+}
+
+/* ---------- 物件概要：3Dイメージ ---------- */
+.site3d{position:relative;margin:0;aspect-ratio:4/3.4;overflow:hidden;background:linear-gradient(180deg,#0b1220 0%,#1b2333 38%,#4a3f45 72%,#b07a52 100%);border-radius:2px;isolation:isolate;cursor:grab;touch-action:pan-y}
+.site3d:active{cursor:grabbing}
+.site3d-canvas{position:absolute;inset:0}
+.site3d-canvas canvas{display:block;width:100%;height:100%}
+.site3d-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.site3d.is-3d .site3d-fallback{display:none}
+.site3d:after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 60%,transparent 55%,#0006 100%)}
+.site3d-tag{position:absolute;left:22px;top:20px;z-index:2;color:#fff;pointer-events:none}
+.site3d-tag span{display:block;font:10px/1.6 -apple-system,sans-serif;letter-spacing:.3em;color:var(--c-gold-l)}
+.site3d-tag b{font:400 22px/1.5 var(--c-mincho);letter-spacing:.12em;font-weight:400}
+.site3d-hint{position:absolute;right:20px;bottom:16px;z-index:2;font:10px/1 -apple-system,sans-serif;letter-spacing:.24em;color:#ffffffa6;pointer-events:none}
+.site3d figcaption{position:absolute;left:22px;right:22px;bottom:14px;z-index:2;font:10px/1.7 -apple-system,sans-serif;color:#ffffffb3;letter-spacing:.04em;pointer-events:none;padding-right:120px}
+@media(max-width:760px){.site3d{aspect-ratio:1/1.15}.site3d-tag b{font-size:18px}.site3d figcaption{font-size:9px;padding-right:0;bottom:34px}.site3d-hint{bottom:14px;left:22px;right:auto}}
+/* FV：価格を足した分、パネルを下げて「AOYAMA」と重ならないように */
+@media(min-width:761px){
+ .luxury-v4.variant-c .minimal-title{bottom:6%!important;padding-top:20px!important}
+ .luxury-v4.variant-c .station-time strong{font-size:clamp(76px,7vw,108px)!important}
+ .luxury-v4.variant-c .station-name{font-size:clamp(26px,2.8vw,42px)!important}
+ .luxury-v4.variant-c .minimal-title .station-hero{gap:4px!important}
+}
+/* 3Dイメージを見出し直下に全幅で */
+.site3d-wrap{margin-bottom:56px}
+.site3d-wrap .site3d{aspect-ratio:16/8}
+@media(max-width:760px){.site3d-wrap{margin-bottom:36px}.site3d-wrap .site3d{aspect-ratio:1/1.05}}

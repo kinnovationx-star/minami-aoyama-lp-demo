@@ -58,7 +58,7 @@ h1,h2,h3,h4,.aerial-title,.luxury-v4 h1,.luxury-v4 h2,.luxury-v4 h3,.design-v3 h
  .final-ac main :is(.intro-copy p,.possibilities article p,.frontage p:not(.note),.volume-box p,.pin-kicker){font-size:17px!important;line-height:2!important}
  .final-ac main :is(.note,.estate-note,.estate-laws p){font-size:13px!important;line-height:1.9!important}
  .final-ac main :is(.intro-tags span,.living-caption span,.volume-box>span,.possibilities article>b){font-size:13px!important}
- .final-ac main :is(.estate-group-title span,.estate-price span,.estate-price small,#outline dt,#outline div>small,#outline div>span){font-size:13px!important}
+ .final-ac main :is(.estate-group-title>span,.estate-price>span,.estate-price>small,#outline dt,#outline .estate-area>div>small,#outline .estate-area>div>span){font-size:13px!important}
  .final-ac main #outline dd{font-size:16px!important}
  .final-ac main :is(.estate-laws summary,.estate-laws summary span){font-size:15px!important}
  .final-ac main :is(.pin-counter,.pin-counter a,.pin-counter span){font-size:14px!important}

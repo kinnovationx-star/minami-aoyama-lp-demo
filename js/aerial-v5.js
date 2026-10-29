@@ -1,4 +1,4 @@
-import * as THREE from './vendor/three.module.js';
+import * as THREE from '../vendor/three.module.js';
 
 /* 青山の航空写真ストーリー
    - 地面：国土地理院の航空写真（同梱）。広域=z16、物件周辺=z18の高精細画像を重ねる

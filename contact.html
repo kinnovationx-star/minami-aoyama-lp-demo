@@ -5,16 +5,16 @@
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta name="robots" content="noindex,nofollow"/>
 <title>お問い合わせ｜南青山三丁目</title>
-<link href="contact.css?v=1" rel="stylesheet"/>
+<link href="css/contact.css?v=1" rel="stylesheet"/>
 <script>
 /* デザイン（A/C）を先に決めてチラつきを防ぐ */
-(function(){var q=new URLSearchParams(location.search),d=q.get('d')==='a'?'a':'c';document.documentElement.dataset.design=d})();
+document.documentElement.dataset.design='c';
 </script>
 </head>
 <body>
 <header class="c-header">
- <a class="c-logo" data-back href="c.html">MINAMI AOYAMA<small>3-CHOME / RESIDENCE LAND</small></a>
- <a class="c-back" data-back href="c.html"><span aria-hidden="true">←</span> 物件ページへ戻る</a>
+ <a class="c-logo" data-back href="index.html">MINAMI AOYAMA<small>3-CHOME / RESIDENCE LAND</small></a>
+ <a class="c-back" data-back href="index.html"><span aria-hidden="true">←</span> 物件ページへ戻る</a>
 </header>
 
 <main class="c-main">
@@ -72,9 +72,8 @@
 
 <script>
 (function(){
- var q=new URLSearchParams(location.search),d=document.documentElement.dataset.design,page=d+'.html';
+ var q=new URLSearchParams(location.search),page='index.html';
  document.querySelectorAll('[data-back]').forEach(function(a){a.href=page});
- if(d==='a')document.querySelector('.c-visual-img').src='assets/mood/material-light.webp';
  var t=q.get('type');
  document.querySelectorAll('[name=request]').forEach(function(r){if(r.value===t)r.checked=true});
  var form=document.querySelector('.c-form'),visit=document.querySelector('.c-visit');
