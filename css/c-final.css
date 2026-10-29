@@ -193,3 +193,16 @@ body.final-ac{padding-top:var(--hh)}
 .site-footer-copy{margin-left:auto;font-size:11px;color:#7a7f75;letter-spacing:.08em}
 .text-link{color:inherit;text-underline-offset:4px}
 @media(max-width:760px){.site-footer{padding:40px 6% calc(110px + env(safe-area-inset-bottom))}.site-footer-inner{flex-direction:column;align-items:flex-start;gap:22px}.site-footer-nav{flex-direction:column;gap:14px}.site-footer-copy{margin-left:0}}
+
+/* ---------- 英語の小見出しを削除（残る要素の余白も詰める） ---------- */
+.aerial-kicker,.eyebrow{display:none!important}
+.luxury-v4 .aerial-title{margin-top:0!important}
+
+/* ---------- 物件概要：チラシ情報のアコーディオン ---------- */
+.estate-flyer{max-width:980px}
+.estate-flyer .estate-information{margin-top:8px}
+.acc-list{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.acc-list li{position:relative;padding-left:26px;font-size:16px;line-height:1.85}
+.acc-list li:before{content:'';position:absolute;left:2px;top:.62em;width:12px;height:7px;border-left:1.5px solid var(--c-gold);border-bottom:1.5px solid var(--c-gold);transform:rotate(-45deg)}
+.estate-acc .acc-title{font-size:clamp(20px,1.8vw,26px)}
+@media(max-width:760px){.acc-list li{font-size:14.5px}.estate-acc .acc-title{font-size:19px}}

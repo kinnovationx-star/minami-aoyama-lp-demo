@@ -67,15 +67,15 @@ const POIS=[
  ['南青山四丁目緑地','park',139.720403,35.665821]
 ].map(([name,cat,lon,lat])=>({name,cat,lon,lat,type:'poi',chapters:[2]}));
 const labelDefs=[
- {name:'南青山三丁目',en:'MINAMI AOYAMA 3-CHOME',sub:'RESIDENCE AREA',lon:SITE.lon,lat:SITE.lat,type:'primary',chapters:[1]},
- {name:'表参道駅',en:'OMOTESANDO STA.',sub:'銀座線・半蔵門線・千代田線',lon:STATION.lon,lat:STATION.lat,type:'station',chapters:[1]},
+ {name:'南青山三丁目',en:'',sub:'物件所在エリア',lon:SITE.lon,lat:SITE.lat,type:'primary',chapters:[1]},
+ {name:'表参道駅',en:'',sub:'銀座線・半蔵門線・千代田線',lon:STATION.lon,lat:STATION.lat,type:'station',chapters:[1]},
 ];
 
 const layer=stage.querySelector('.aerial-labels');
 const labels=labelDefs.map((d,i)=>{const el=document.createElement('div');
  el.className=`geo-label ${d.type}${d.cat==='home'?' poi-home':''}`;
- if(d.type==='station')el.innerHTML=`<i class="pin"></i><span><em>${d.en}</em>${d.name}</span><small>${d.sub}</small>`;
- else if(d.type==='primary')el.innerHTML=`<span><em>${d.en}</em>${d.name}</span><small>${d.sub}</small>`;
+ if(d.type==='station')el.innerHTML=`<i class="pin"></i><span>${d.en?`<em>${d.en}</em>`:''}${d.name}</span><small>${d.sub}</small>`;
+ else if(d.type==='primary')el.innerHTML=`<span>${d.en?`<em>${d.en}</em>`:''}${d.name}</span><small>${d.sub}</small>`;
  else if(d.type==='poi'){el.style.setProperty('--c',CATS[d.cat].color);el.innerHTML=`<i class="poi-ico"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[d.cat]}</svg></i><span class="poi-name">${d.name}</span>`}
  else el.innerHTML=`<span>${d.name}</span>`;
  layer.append(el);
