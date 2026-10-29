@@ -211,3 +211,4 @@ body.final-ac{padding-top:var(--hh)}
 .estate-area p .pre{margin-right:.15em}
 .estate-area p{white-space:nowrap}
 @media(max-width:760px){.estate-area{gap:18px!important}.estate-area p{font-size:clamp(26px,7.4vw,34px)!important}}
+.final-ac .mobile-menu a.menu-company{opacity:1!important;font-size:inherit!important;margin-top:0!important}
