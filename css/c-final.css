@@ -77,3 +77,60 @@
 .site3d-wrap{margin-bottom:56px}
 .site3d-wrap .site3d{aspect-ratio:16/8}
 @media(max-width:760px){.site3d-wrap{margin-bottom:36px}.site3d-wrap .site3d{aspect-ratio:1/1.05}}
+
+/* ---------- ヘッダーのロゴ（REJ） ---------- */
+.logo-brand{display:flex!important;align-items:center;gap:14px;text-decoration:none}
+.logo-rej{height:30px;width:auto;display:block}
+.logo-sep{width:1px;height:26px;background:currentColor;opacity:.25}
+.logo-name{display:block}
+@media(max-width:760px){.logo-rej{height:22px}.logo-brand{gap:10px}.logo-sep{height:20px}.logo-name{font-size:13px!important}.logo-name small{font-size:7px!important}}
+
+/* ---------- スマホFV：文字パネルを小さくして写真を見せる ---------- */
+@media(max-width:760px){
+ .photo-v2 .editorial-photo .minimal-title{max-width:68%!important;padding:12px 16px 12px 0!important;bottom:calc(72px + env(safe-area-inset-bottom))!important}
+ .luxury-v4.variant-c .minimal-title h1{font-size:11px!important;margin-bottom:4px!important}
+ .luxury-v4.variant-c .station-name{font-size:19px!important;letter-spacing:.1em!important}
+ .luxury-v4.variant-c .station-time{font-size:16px!important;gap:8px!important}
+ .luxury-v4.variant-c .station-time strong{font-size:46px!important}
+ .luxury-v4.variant-c .minimal-title .station-hero{gap:2px!important}
+ .hero-price{margin-top:10px;padding-top:9px}
+ .hero-price-label{font-size:8px;letter-spacing:.26em}
+ .hero-price-num{margin-top:4px!important}
+ .hero-price-num strong{font-size:34px}
+ .hero-price-num .u{font-size:13px}
+ .hero-price-meta{font-size:9.5px!important;gap:6px;margin-top:6px!important;letter-spacing:.02em!important}
+ .hero-price-meta i{height:9px}
+}
+
+/* ---------- 3Dイメージ：スライド操作 ---------- */
+.site3d-tag{max-width:70%}
+.site3d-tag b{display:block;font-size:clamp(18px,1.8vw,26px)!important}
+.site3d-ui{position:absolute;right:20px;top:18px;z-index:3;display:flex;align-items:center;gap:10px}
+.site3d-arrow{width:44px;height:44px;border:1px solid #ffffff66;background:#0b122066;color:#fff;font:16px/1 -apple-system,sans-serif;cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .3s,border-color .3s}
+.site3d-arrow:hover{background:#ffffff26;border-color:var(--c-gold-l)}
+.site3d-dots{display:flex;gap:6px}
+.site3d-dots button{width:34px;height:44px;background:none;border:0;padding:0;cursor:pointer;position:relative;color:#ffffff99}
+.site3d-dots button span{font:10px/1 -apple-system,sans-serif;letter-spacing:.12em}
+.site3d-dots button:after{content:'';position:absolute;left:4px;right:4px;bottom:10px;height:1px;background:#ffffff59;transition:background .3s}
+.site3d-dots button[aria-current=true]{color:#fff}
+.site3d-dots button[aria-current=true]:after{background:var(--c-gold-l);height:2px}
+.site3d-hint{content:''}
+@media(max-width:760px){.site3d-ui{top:auto;bottom:52px;right:14px;gap:6px}.site3d-arrow{width:40px;height:40px}.site3d-dots button{width:28px}.site3d-tag{left:16px;top:16px;max-width:86%}.site3d figcaption{left:16px;right:16px}}
+
+/* ---------- PC：FVパネルが「AOYAMA」に重ならないよう、画面の高さに合わせて縮める ---------- */
+@media(min-width:761px){
+ .luxury-v4.variant-c .minimal-title{bottom:4%!important;padding:16px 26px 14px 0!important}
+ .luxury-v4.variant-c .minimal-title h1{margin-bottom:6px!important}
+ .luxury-v4.variant-c .station-time strong{font-size:clamp(64px,min(6vw,11vh),100px)!important}
+ .luxury-v4.variant-c .station-name{font-size:clamp(24px,min(2.6vw,4.6vh),40px)!important}
+ .hero-price{margin-top:min(20px,2.4vh);padding-top:min(18px,2.2vh)}
+ .hero-price-num strong{font-size:clamp(44px,min(5.4vw,9vh),86px)}
+ .hero-price-meta{margin-top:8px!important}
+}
+@media(min-width:761px) and (max-height:820px){
+ .luxury-v4.variant-c .minimal-title h1{font-size:12px!important}
+ .luxury-v4.variant-c .station-time{font-size:18px!important}
+ .hero-price-label{font-size:9px}
+ .hero-price-meta{font-size:11px!important}
+}
+@media(max-width:760px){.site3d-hint{display:none}.site3d-ui{bottom:12px;right:12px;left:12px;justify-content:space-between}.site3d figcaption{bottom:66px}}

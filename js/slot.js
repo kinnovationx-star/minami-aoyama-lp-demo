@@ -1,6 +1,6 @@
 /* 物件概要の価格・面積をスロットのように回して止める */
 (function(){
- var targets=[].slice.call(document.querySelectorAll('.hero-price-num strong,.estate-area p'));
+ var targets=[].slice.call(document.querySelectorAll('.hero-price-num strong,.estate-price p strong,.estate-area p'));
  if(!targets.length)return;
  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
  var CYCLES=2; // 止まるまでに回る周回数

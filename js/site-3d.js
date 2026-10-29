@@ -16,7 +16,7 @@ function webgl(){try{const c=document.createElement('canvas');return !!(c.getCon
 if(fig&&host&&webgl())init();
 
 function init(){
- const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
+ const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance',logarithmicDepthBuffer:true});
  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
  renderer.outputColorSpace=THREE.SRGBColorSpace;
  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
@@ -26,7 +26,7 @@ function init(){
 
  const scene=new THREE.Scene();
  scene.fog=new THREE.Fog('#2b2a36',260,720);
- const camera=new THREE.PerspectiveCamera(30,1,1,3000);
+ const camera=new THREE.PerspectiveCamera(30,1,.3,7000);
 
  /* ---- 光（夕景） ---- */
  scene.add(new THREE.HemisphereLight('#7f8db3','#3a2c26',.9));
@@ -80,6 +80,32 @@ function init(){
   draw();
  }).catch(()=>{});
 
+ /* ---- 遠景のスカイライン（簡略化した街並み）とランドマーク ---- */
+ {const P=[],N=[],U=[],RP=[],RN=[];
+  function prism(cx,cz,ring,y0,y1){ // ring: [[x,z],...] 反時計回り
+   for(let i=0;i<ring.length;i++){const a=ring[i],b=ring[(i+1)%ring.length];
+    const ax=cx+a[0],az=cz+a[1],bx=cx+b[0],bz=cz+b[1],len=Math.hypot(bx-ax,bz-az);
+    const nx=(bz-az)/len,nz=-(bx-ax)/len;
+    const q=[[ax,y0,az,0,y0],[bx,y0,bz,len,y0],[bx,y1,bz,len,y1],[ax,y0,az,0,y0],[bx,y1,bz,len,y1],[ax,y1,az,0,y1]];
+    q.forEach(v=>{P.push(v[0],v[1],v[2]);N.push(nx,0,nz);U.push(v[3],v[4])})}
+   for(let i=1;i<ring.length-1;i++)[ring[0],ring[i],ring[i+1]].forEach(v=>{RP.push(cx+v[0],y1,cz+v[1]);RN.push(0,1,0)})}
+  const rect=(w,d,r)=>[[-w/2,-d/2],[w/2,-d/2],[w/2,d/2],[-w/2,d/2]].map(([x,z])=>[x*Math.cos(r)-z*Math.sin(r),x*Math.sin(r)+z*Math.cos(r)]);
+  const ngon=(rad,n)=>Array.from({length:n},(_,i)=>{const a=-i/n*Math.PI*2;return[Math.cos(a)*rad,Math.sin(a)*rad]});
+  let sd=11;const R=()=>(sd=(sd*16807)%2147483647)/2147483647;
+  for(let i=0;i<950;i++){const r=520+Math.pow(R(),.85)*1350,a=R()*Math.PI*2,x=Math.sin(a)*r,z=Math.cos(a)*r;
+   const h=10+Math.pow(R(),2.4)*(r>900?85:55);prism(x,z,rect(14+R()*26,14+R()*26,R()*Math.PI),0,h)}
+  const tower=(lon,lat,ring,h)=>{const [x,z]=toXZ(lon,lat);prism(x,z,ring,0,h);return[x,z]};
+  const mori=tower(139.7292,35.6604,ngon(40,14),228);prism(mori[0],mori[1],ngon(32,14),228,240);
+  const mid=tower(139.7314,35.6655,rect(62,44,.3),200);prism(mid[0],mid[1],rect(50,34,.3),200,248);
+  [[139.6917,35.6896,243],[139.6950,35.6915,223],[139.6940,35.6930,210],[139.6975,35.6890,200]].forEach(([lo,la,h])=>tower(lo,la,rect(52,42,.2),h));
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));
+  const rg=new THREE.BufferGeometry();rg.setAttribute('position',new THREE.Float32BufferAttribute(RP,3));rg.setAttribute('normal',new THREE.Float32BufferAttribute(RN,3));
+  scene.add(new THREE.Mesh(g,wallMat),new THREE.Mesh(rg,roofMat));
+  /* 航空障害灯 */
+  const red=new THREE.MeshBasicMaterial({color:'#ff4a3a'});
+  [[mori,241],[mid,249]].forEach(([p,h])=>{const m=new THREE.Mesh(new THREE.SphereGeometry(1.6,8,8),red);m.position.set(p[0],h,p[1]);scene.add(m)});
+ }
+
  /* ---- 計画イメージの邸宅 ---- */
  const house=new THREE.Group();house.rotation.y=Math.PI/4; // 正面を南東（前面道路側）へ
  scene.add(house);
@@ -118,8 +144,7 @@ function init(){
  box(9.2,.34,8.4,M.slab,-.2,10.14,-1.6,{edge:true});
  box(10.2,1.05,.05,M.glass,.2,7.14,4.15,{cast:false});
  box(8.6,1.05,.05,M.glass,-.2,10.48,2.55,{cast:false});
- for(let i=0;i<6;i++)box(.12,.18,4.2,M.wood,-3.4+i*1.2,12.4,-.4);
- box(.16,2.0,.16,M.granite,-3.6,10.48,1.6);box(.16,2.0,.16,M.granite,3.0,10.48,1.6);
+ 
  /* ガラスの方立て（ブロンズ） */
  const bronze=new THREE.MeshStandardMaterial({color:'#3b2f25',roughness:.4,metalness:.6});
  function mullions(x0,x1,y,h,z,step){for(let x=x0;x<=x1+.001;x+=step)box(.07,h,.09,bronze,x,y,z,{cast:false})}
@@ -140,22 +165,63 @@ function init(){
  const halo=new THREE.Mesh(new THREE.PlaneGeometry(34,34),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(gc),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
  halo.rotation.x=-Math.PI/2;halo.position.y=.15;house.add(halo);
 
- /* ---- カメラ操作（自動回転＋ドラッグ） ---- */
- let angle=Math.PI/4+.5,targetAngle=angle,pitch=.38,dragging=false,lastX=0,lastT=performance.now(),visible=false,raf=0;
- const target=new THREE.Vector3(0,5.5,0);
- fig.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;fig.setPointerCapture(e.pointerId)});
- fig.addEventListener('pointermove',e=>{if(!dragging)return;targetAngle-=(e.clientX-lastX)*.008;lastX=e.clientX;draw()});
- ['pointerup','pointercancel'].forEach(t=>fig.addEventListener(t,()=>{dragging=false}));
+ /* ---- 3つの視点をスライドで切り替え ---- */
+ const SLIDES=[
+  {en:'EXTERIOR',jp:'南青山の街並みに建つ、邸宅のイメージ',fog:[340,2700]},
+  {en:'ROOFTOP VIEW',jp:'屋上から望む、青山の夕景',fog:[300,3000]},
+  {en:'AERIAL',jp:'南青山三丁目を、俯瞰する',fog:[260,900]}];
+ house.updateMatrixWorld(true);
+ const roofEye=house.localToWorld(new THREE.Vector3(2.6,21,1.2)); // 眺望イメージの視点（屋上テラス）
+ const viewDir=Math.atan2(1280,170); // 六本木ヒルズ・東京ミッドタウン方面（東南東）
+ /* 眺望スライド用の手すり（視点の手前に置く） */
+ const rail=new THREE.Group();
+ {const glass=new THREE.Mesh(new THREE.BoxGeometry(9,1.05,.04),M.glass),top=new THREE.Mesh(new THREE.BoxGeometry(9,.06,.12),new THREE.MeshStandardMaterial({color:'#6b5338',roughness:.35,metalness:.7}));
+  glass.position.y=.52;top.position.y=1.08;const deck=new THREE.Mesh(new THREE.BoxGeometry(9,.12,3.2),new THREE.MeshStandardMaterial({color:'#7d6a58',roughness:.8}));deck.position.set(0,-.06,-1.6);
+  rail.add(glass,top,deck);
+  const d=2.4;rail.position.set(roofEye.x+Math.sin(viewDir)*d,roofEye.y-1.62,roofEye.z+Math.cos(viewDir)*d);rail.rotation.y=viewDir;rail.visible=false;scene.add(rail)} // 六本木ヒルズ・東京ミッドタウン方面（東南東）
+ let current=0,yaw=0,tYaw=0,since=0,clock=0,trans=1,from=null,dragging=false,downX=0,lastX=0,downT=0,visible=false,raf=0,lastT=performance.now(),pausedUntil=0;
+ function view(i,t){const mobile=host.clientWidth<600,v={pos:new THREE.Vector3(),target:new THREE.Vector3(),fov:30};
+  if(i===0){const a=Math.PI/4+.42+yaw,r=46;v.pos.set(Math.sin(a)*r,mobile?12:11,Math.cos(a)*r);v.target.set(0,mobile?7:7.5,0);v.fov=mobile?50:32}
+  else if(i===1){const a=viewDir+yaw*.8+Math.sin(t*.12)*.05;v.pos.copy(roofEye);v.target.set(roofEye.x+Math.sin(a)*300,-18,roofEye.z+Math.cos(a)*300);v.fov=mobile?70:58}
+  else{const a=Math.PI/4+.5+t*.07+yaw,r=mobile?66:54,pt=.38;v.pos.set(Math.sin(a)*r*Math.cos(pt),5.5+r*Math.sin(pt),Math.cos(a)*r*Math.cos(pt));v.target.set(0,5.5,0);v.fov=30}
+  return v}
+ const ease=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+ function apply(){const v=view(current,clock);
+  if(trans<1&&from){const k=ease(trans);v.pos.lerpVectors(from.pos,v.pos,k);v.target.lerpVectors(from.target,v.target,k);v.fov=from.fov+(v.fov-from.fov)*k}
+  camera.position.copy(v.pos);camera.lookAt(v.target);if(camera.fov!==v.fov){camera.fov=v.fov;camera.updateProjectionMatrix()}
+  const f=SLIDES[current].fog;scene.fog.near+=(f[0]-scene.fog.near)*.08;scene.fog.far+=(f[1]-scene.fog.far)*.08;
+  rail.visible=current===1&&trans>.55;wallMat.emissiveIntensity+=((current===1?.55:.2)-wallMat.emissiveIntensity)*.08}
+ function draw(){apply();renderer.render(scene,camera)}
 
- function place(){const mobile=host.clientWidth<600,r=mobile?66:54;
-  camera.position.set(target.x+Math.sin(angle)*r*Math.cos(pitch),target.y+r*Math.sin(pitch),target.z+Math.cos(angle)*r*Math.cos(pitch));
-  camera.lookAt(target)}
- function draw(){place();renderer.render(scene,camera)}
+ /* UI */
+ const tag=fig.querySelector('.site3d-tag'),hint=fig.querySelector('.site3d-hint');
+ const ui=document.createElement('div');ui.className='site3d-ui';
+ ui.innerHTML=`<button class="site3d-arrow prev" type="button" aria-label="前の視点">←</button><div class="site3d-dots">${SLIDES.map((s,i)=>`<button type="button" aria-label="${s.jp}"><span>${String(i+1).padStart(2,'0')}</span></button>`).join('')}</div><button class="site3d-arrow next" type="button" aria-label="次の視点">→</button>`;
+ fig.append(ui);
+ const dots=[...ui.querySelectorAll('.site3d-dots button')];
+ function label(){tag.innerHTML=`<span>${SLIDES[current].en}</span><b>${SLIDES[current].jp}</b>`;dots.forEach((d,i)=>d.setAttribute('aria-current',String(i===current)));fig.dataset.view=current}
+ function go(i,user){i=(i+SLIDES.length)%SLIDES.length;if(i===current)return;const v=view(current,clock);
+  from={pos:camera.position.clone(),target:v.target.clone(),fov:camera.fov};
+  if(trans<1){const d=new THREE.Vector3();camera.getWorldDirection(d);from.target.copy(camera.position).addScaledVector(d,from.pos.distanceTo(v.target))}
+  current=i;yaw=tYaw=0;trans=0;since=0;if(user)pausedUntil=clock+14;label();
+  if(reduce.matches){trans=1;draw()}}
+ ui.querySelector('.prev').addEventListener('click',e=>{e.stopPropagation();go(current-1,true)});
+ ui.querySelector('.next').addEventListener('click',e=>{e.stopPropagation();go(current+1,true)});
+ dots.forEach((d,i)=>d.addEventListener('click',e=>{e.stopPropagation();go(i,true)}));
+ fig.addEventListener('pointerdown',e=>{if(e.target.closest('.site3d-ui'))return;dragging=true;downX=lastX=e.clientX;downT=performance.now();fig.setPointerCapture(e.pointerId)});
+ fig.addEventListener('pointermove',e=>{if(!dragging)return;tYaw-=(e.clientX-lastX)*.006;tYaw=current===2?tYaw:clamp(tYaw,-.8,.8);lastX=e.clientX;pausedUntil=clock+14;if(!raf)draw()});
+ ['pointerup','pointercancel'].forEach(t=>fig.addEventListener(t,e=>{if(!dragging)return;dragging=false;
+  const dx=e.clientX-downX;if(e.pointerType==='touch'&&Math.abs(dx)>70&&performance.now()-downT<380){tYaw=yaw;go(current+(dx<0?1:-1),true)}}));
+ fig.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(current+1,true);if(e.key==='ArrowLeft')go(current-1,true)});
+
  function loop(t){raf=0;if(!visible)return;const dt=Math.min(.05,(t-lastT)/1000);lastT=t;
-  if(!dragging&&!reduce.matches)targetAngle+=dt*.07;
-  angle+=(targetAngle-angle)*.12;draw();raf=requestAnimationFrame(loop)}
+  if(!reduce.matches){clock+=dt;since+=dt}
+  if(trans<1)trans=Math.min(1,trans+dt/1.8);
+  yaw+=(tYaw-yaw)*.12;
+  if(!reduce.matches&&!dragging&&since>7.5&&clock>pausedUntil)go(current+1,false);
+  draw();raf=requestAnimationFrame(loop)}
  function resize(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();draw()}
  new ResizeObserver(resize).observe(host);
  new IntersectionObserver(es=>{visible=es[0].isIntersecting;if(visible&&!raf){lastT=performance.now();raf=requestAnimationFrame(loop)}},{rootMargin:'100px'}).observe(fig);
- resize();
+ label();resize();
 }
