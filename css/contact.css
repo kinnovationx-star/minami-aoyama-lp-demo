@@ -83,3 +83,5 @@ em{font-style:normal;font-size:10px;letter-spacing:.1em;color:var(--gold);border
 .c-logo-rej{height:26px;width:auto;filter:brightness(0) invert(1);opacity:.95}
 .c-logo-name{display:block;padding-left:14px;border-left:1px solid #ffffff55}
 @media(max-width:900px){.c-logo-rej{height:20px}.c-logo{gap:10px}.c-logo-name{padding-left:10px;font-size:13px}}
+.c-footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.c-footer a{color:var(--gold-strong);text-decoration:none;letter-spacing:.12em}

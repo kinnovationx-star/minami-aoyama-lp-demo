@@ -167,3 +167,29 @@
 .view-arrow.next{right:16px!important}
 .view-dots{justify-content:flex-start!important;left:18px!important;right:auto!important;bottom:20px!important}
 @media(max-width:760px){.view-arrow{width:30px!important;height:30px!important;bottom:10px}.view-arrow.prev{right:48px!important}.view-arrow.next{right:12px!important}.view-dots{left:12px!important;bottom:15px!important}}
+
+/* ---------- ヘッダー固定 ---------- */
+:root{--hh:76px}
+@media(max-width:760px){:root{--hh:64px}}
+html{scroll-padding-top:var(--hh)}
+body.final-ac{padding-top:var(--hh)}
+.final-ac .header{position:fixed!important;top:0;left:0;right:0;z-index:100;height:var(--hh)!important;background:color-mix(in srgb,var(--paper,#f8f8f4) 90%,transparent)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.final-ac.menu-open .header{z-index:102}
+.aerial-stage,.pin-scene{top:var(--hh)!important;height:calc(100svh - var(--hh))!important}
+.estate-visual{top:calc(var(--hh) + 24px)!important}
+.header-company{margin-left:auto;margin-right:18px;font:12px/1 -apple-system,sans-serif;letter-spacing:.14em;color:inherit;text-decoration:none;padding:10px 4px;border-bottom:1px solid transparent;transition:border-color .3s}
+.header-company span{margin-left:6px;font-size:10px}
+.header-company:hover{border-color:currentColor}
+@media(max-width:760px){.header-company{display:none}}
+.menu-company{opacity:.75;font-size:.85em!important;margin-top:8px}
+
+/* ---------- フッター ---------- */
+.site-footer{border-top:1px solid var(--line,#d5d8d1);background:var(--paper,#f8f8f4);padding:56px 6% calc(120px + env(safe-area-inset-bottom))}
+.site-footer-inner{max-width:1200px;margin:auto;display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+.site-footer-logo img{height:34px;width:auto;display:block}
+.site-footer-nav{display:flex;gap:28px;flex-wrap:wrap;font-size:13px;letter-spacing:.08em}
+.site-footer-nav a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
+.site-footer-nav a:hover{border-color:currentColor}
+.site-footer-copy{margin-left:auto;font-size:11px;color:#7a7f75;letter-spacing:.08em}
+.text-link{color:inherit;text-underline-offset:4px}
+@media(max-width:760px){.site-footer{padding:40px 6% calc(110px + env(safe-area-inset-bottom))}.site-footer-inner{flex-direction:column;align-items:flex-start;gap:22px}.site-footer-nav{flex-direction:column;gap:14px}.site-footer-copy{margin-left:0}}
