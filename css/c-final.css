@@ -212,3 +212,6 @@ body.final-ac{padding-top:var(--hh)}
 .estate-area p{white-space:nowrap}
 @media(max-width:760px){.estate-area{gap:18px!important}.estate-area p{font-size:clamp(26px,7.4vw,34px)!important}}
 .final-ac .mobile-menu a.menu-company{opacity:1!important;font:400 clamp(22px,3vw,38px)/1.7 var(--mincho)!important;margin-top:0!important}
+/* 最寄り駅2つを並べる：区切りを細く、折り返さない */
+.luxury-v4.variant-c .station-name{white-space:nowrap}
+.luxury-v4.variant-c .station-name i{font-style:normal;opacity:.55;margin:0 .15em;letter-spacing:0}
